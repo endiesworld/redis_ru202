@@ -23,8 +23,8 @@ In order to run the sample code, you will need:
 Execute these commands in your shell to clone the repository, create a Python virtual environment and install the depdendencies:
 
 ```bash
-git clone https://github.com/redislabs-training/ru202.git
-cd ru202
+git clone https://github.com/redislabs-training/redis_ru202.git
+cd redis_ru202
 python3 -m venv env
 . env/bin/activate
 pip install -r requirements.txt
