@@ -9,6 +9,7 @@ from util.connection import get_connection
 
 KEY = 'numbers'
 GROUP = 'primes'
+# You can add more consumers by changing the value of MEMBERS
 MEMBERS = 3
 
 def prime(a):
@@ -22,6 +23,7 @@ def prime(a):
 def setup():
     ''' Initializes the Stream and the primes consumers group '''
     redis = get_connection()
+    print(redis)
     redis.delete(KEY)
     redis.xgroup_create(KEY, GROUP, mkstream=True)
 
@@ -34,6 +36,7 @@ def producer_func():
         data = {'n': n}
         _id = redis.xadd(KEY, data)
         n += 1
+        # You can slow down the producer by changing the sleep command
         sleep(random.random()/MEMBERS)
 
 def consumer_func(name):
@@ -46,6 +49,8 @@ def consumer_func(name):
 
     while True:
         count = random.randint(1, 5)
+        # Increase the maximum number of messages each consumer reads in a call to XREADGROUP. 
+        # The value of count is currently a random number between 1 and 5, inclusive. 
         reply = redis.xreadgroup(GROUP, name, {KEY: from_id}, count=count, block=timeout)
         if not reply:
             if retries == 5:
